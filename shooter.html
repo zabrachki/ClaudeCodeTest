@@ -287,11 +287,15 @@ function update(dt, ts) {
   if (spawnTimer <= 0) {
     spawnTimer = spawnRate;
     const margin = 40;
+    const bodyColor = `hsl(${Math.random() * 360 | 0}, ${55 + Math.random() * 30 | 0}%, ${40 + Math.random() * 20 | 0}%)`;
+    const nailColor = `hsl(${Math.random() * 360 | 0}, 60%, 25%)`;
     enemies.push({
       x: margin + Math.random() * (canvas.width - margin * 2),
       y: -FOOT_H,
       speed: BASE_ENEMY_SPD + phase * 8 + Math.random() * 20,
       flash: 0,
+      bodyColor,
+      nailColor,
     });
   }
 
@@ -334,7 +338,7 @@ function update(dt, ts) {
       const e = enemies[j];
       const dx = b.x - e.x, dy = b.y - e.y;
       if (Math.abs(dx) < FOOT_W * 0.6 && Math.abs(dy) < FOOT_H * 0.6) {
-        spawnParticles(e.x, e.y, '#8BC34A', 10);
+        spawnParticles(e.x, e.y, e.bodyColor, 10);
         enemies.splice(j, 1);
         bullets.splice(i, 1);
         hit = true;
@@ -405,7 +409,7 @@ function draw(ts) {
     // Enemies point downward (toward player)
     ctx.rotate(Math.PI);
     if (e.flash > 0) ctx.globalAlpha = 0.5 + e.flash * 0.5;
-    drawFoot(FOOT_W, FOOT_H, '#8BC34A', '#33691E', true);
+    drawFoot(FOOT_W, FOOT_H, e.bodyColor, e.nailColor, true);
     ctx.restore();
 
     // Stink lines drawn separately (above enemy, not rotated)
