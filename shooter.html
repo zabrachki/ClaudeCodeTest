@@ -91,6 +91,8 @@ function initGame() {
     lives: 3,
     invincible: 0,
     invFlash: 0,
+    bodyColor: '#FDBCB4',
+    nailColor: '#F48FB1',
   };
 
   enemies   = [];
@@ -345,6 +347,9 @@ function update(dt, ts) {
         killCount++;
         GameState.score += 10;
         phase = Math.floor(killCount / 10);
+        const hue = Math.random() * 360 | 0;
+        player.bodyColor = `hsl(${hue}, 70%, 75%)`;
+        player.nailColor = `hsl(${hue}, 60%, 55%)`;
         break;
       }
     }
@@ -424,7 +429,7 @@ function draw(ts) {
     ctx.save();
     ctx.translate(player.x, player.y);
     ctx.rotate(player.angle);
-    drawFoot(FOOT_W, FOOT_H, '#FDBCB4', '#F48FB1', false);
+    drawFoot(FOOT_W, FOOT_H, player.bodyColor, player.nailColor, false);
     ctx.restore();
   }
 
